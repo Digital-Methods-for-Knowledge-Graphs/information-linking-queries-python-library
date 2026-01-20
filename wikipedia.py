@@ -1,4 +1,4 @@
-from .http_session import session
+from .helpers import cleaner
 from .headers import headers
 import requests
 
@@ -16,4 +16,5 @@ def retrieve_wikipedia_label(url):
     title = cleaner(json_data.get('query', {}).get('pages', [{}])[0].get('title', 'NIL'))
 
     return title
+
 
