@@ -1,10 +1,11 @@
 from .helpers import get_results
-from .http_session import session
+from .headers import headers
+import requests
 
 def retrieve_wikidata_url(url):
     id = url.split("=")[-1].strip()
     url = f"https://en.wikipedia.org/w/api.php?action=query&prop=pageprops&pageids={id}&formatversion=2&format=json"
-    json_data = session.get(url, params=params).json()
+    json_data = requests.get(url, headers=headers).json()
     wikidata_qid = json_data.get('query', {}).get('pages', [{}])[0].get('pageprops', "NIL").get("wikibase_item", "NIL")
     wikidata_url = f"https://www.wikidata.org/wiki/{wikidata_qid.strip()}"
     return wikidata_url
@@ -12,7 +13,7 @@ def retrieve_wikidata_url(url):
 def retrieve_wikidata_aliases(url):
     id = url.split("=")[-1].strip()
     url = f"https://en.wikipedia.org/w/api.php?action=query&prop=pageprops&pageids={id}&formatversion=2&format=json"
-    json_data = session.get(url, params=params).json()
+    json_data = requests.get(url, headers=headers).json()
     wikidata_qid = json_data.get('query', {}).get('pages', [{}])[0].get('pageprops', {}).get("wikibase_item", "NIL")
     if wikidata_qid != "NIL":
         alias_list = []
@@ -31,3 +32,4 @@ def retrieve_wikidata_aliases(url):
         alias_list = []
 
     return alias_list
+
